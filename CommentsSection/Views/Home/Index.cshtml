@@ -1,0 +1,44 @@
+﻿@using CommentsSection.Models.Comments
+@{
+    ViewData["Title"] = "Home Page";
+    var count = 0;
+}
+<a class="btn btn-success" asp-controller="Home" asp-action="Create">Create</a>
+
+<div class="container mt-3">
+    @foreach (Comment comment in ViewBag.Comments)
+    {
+        <div class="row">
+            <text>
+                <strong>Name: @comment.Name</strong>
+                | Date: @comment.Date.Day. @comment.Date.Month. @comment.Date.Year
+            </text>
+            <span> | </span>
+            <a class="btn btn-dark" asp-controller="Home" asp-action="Create" asp-route-parent="@comment.Id">ADD SUBCOMMENT</a>
+        </div>
+        <p>@comment.Content</p>
+
+
+        @foreach (Comment subComment in ViewBag.SubComments)
+        {
+            if (count <= 3)
+            {
+
+                if (subComment.Parent == comment.Id)
+                {
+                    <div class="container" style="background-color: whitesmoke">
+                        <div class="row">
+                            <text>
+                                <strong>Name: @subComment.Name</strong>
+                                | Date: @subComment.Date.Day. @subComment.Date.Month. @subComment.Date.Year
+                            </text>
+                        </div>
+                        <p>@subComment.Content</p>
+                    </div>
+
+                    count++;
+                }
+            }
+        }
+    }
+</div>
